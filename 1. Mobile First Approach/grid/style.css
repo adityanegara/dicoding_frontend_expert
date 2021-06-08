@@ -1,0 +1,50 @@
+.wrapper {
+    display: grid;
+    /* menggunakan FR */
+    /* grid-template-columns: 1fr 2fr 1fr; */
+    /* alternative menggunakan FR */
+    grid-template-columns : repeat(3, 1fr);
+    /* grid-template-columns: 33% 10% 33% ; */
+    grid-template-rows : 50px 100px;
+    row-gap: 16px;
+    column-gap: 10px;
+    /* dapat juga menuliskan gap seperti */
+    gap: 16px 10px;
+   }
+    
+   /* styling pendukung */
+   .wrapper div {
+    border: 1px dashed black;
+    padding: 16px;
+   }
+
+   .box1, .box4 {
+    background-color: mediumseagreen;
+    }
+ 
+ 
+    .box2, .box6 {
+    background-color: steelblue;
+    }
+ 
+ 
+    .box3, .box5 {
+    background-color: gold;
+    }
+
+    .box1{
+        grid-column-start: 1;
+        grid-column-end: 3;
+
+    }
+
+    .box2{
+        grid-column-start: 3;
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+
+    .box3{
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }

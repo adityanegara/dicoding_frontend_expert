@@ -65,11 +65,12 @@ body {
     width: 24%;
     text-align: center;
     line-height: 24px;
-    padding: 24px;
     text-transform: uppercase;
 }
 
 .nav a {
+    display: inline-block;
+    padding: 1.3em;
     text-decoration: none;
     color: #616161;
 }
@@ -135,13 +136,8 @@ main {
  * headline
  */
 
-.headline {
-
-}
-
 .headline__figure {
     width: 100%;
-   
 }
 
 .headline__figure img {
@@ -217,7 +213,6 @@ main {
 .posts {
     margin: 32px auto auto;
     text-align: left;
- 
 }
 
 /*
@@ -225,9 +220,8 @@ main {
  */
 
 .post-item {
-    margin: 16px 0;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    width: 300px;
+    width: 100%;
     border-radius: 5px;
     overflow: hidden;
 }
