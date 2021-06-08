@@ -1,0 +1,18 @@
+A) Viewport
+    A1) Pengertian
+    : Viewport merupakan area yang dapat dilihat oleh pengguna pada browser. 
+
+    A2) Menetapkan Viewport
+    : <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+
+B) Relative Size
+   : Menetapkan nilai statis seperti 1000px tidak bersahabat dengan konsep fluiditas. Solusinya
+     ialah dengan mengubah nilai menggunakan satuan yang relatif. Pada kasus diatas dapat menggunakan
+     persentase(%)
+
+C) Target Touch Size
+   : Ketika membuat sebuah tombol atau komponen apapun 
+     yang dapat digunakan oleh pengguna, pastikan ia memiliki 
+     ruang yang cukup untuk diakses. Ruang minimal sebuah tombol,
+     termasuk yang dibuat menggunakan element <a>, harus memiliki 
+     minimal 44px lebar dan 44px tinggi agar mudah
