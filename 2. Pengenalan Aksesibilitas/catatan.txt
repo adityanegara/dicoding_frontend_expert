@@ -1,0 +1,57 @@
+A) Kebutuhhan khusus penyandang disabilitas pada website
+
+ A1) Penglihatan
+     : Untuk pengguna yang memiliki penglihatan rendah biasa menggunakan text to speech
+       atau screen magnification. Untuk pengguna tuna netra ia mengandalkan screen reader
+       atau bahkan layar braile untuk menelajahi website.
+
+ A2) Motorik atau Ketangkasan
+     : Gangguan motorik dapat mempengaruhi cara penggunaan mouse, layar sentuh, atau alat untuk 
+       menggerakan kursor. Pengguna yang mengalami gangguan ini harus mengandalkan 
+       alat lain seperti keyboard, eye trancking, head-tracking, voice access.
+
+       Penguna motorik menggunakan focus keyboard navigasi dengan  
+       "TAB" untuk next Element
+       "SHIFT+ TAB" untuk previous Element
+
+ A3) Pendengaran
+    : Pengguna yang memiliki gangguan pendengaran mengandalkan caption atau transkrip ketika
+      mengakses konten bersuara.
+
+ A4) Kognitif
+    : Gangguan ini disebabkan karena penurunan fungsi otak yang berhubungan dengan kemampuan perhatian,
+      konsentrasi, kalkulasi, reasoning, dan berpikir abstrak. Munculnya pop up secara tiba-tiba
+      animasi yang berat, warna yang tidak pas akan membuat pengguna kesulitan.
+
+B) Focusable Element
+   B1) Button
+       : Apa perbedaan tag <button></button> dan tag <div></div> yang diberikan click event?
+         Perbedaannya ialah tag button dapat fokus sedangkan tag div tidak dapat
+
+  B2) Kesalahan Pengunaan Anchor dan Button
+       : gunakan tag <a></a> untuk navigasi karena terintergrasi dengan history api. Dan gunakan
+         button untuk keperluan aksi. 
+
+C) Focus Order
+   : Focus order selalu dari struktur htmlnya
+
+D) Tabindex
+   : Gunakan atribute tabindex untuk mengurutkan focus order dari angka terkecil ke terbesar
+    Dengan memberikan nilai tabindex=”0” pada elemen heading, paragraf, dan gambar, 
+    elemen tersebut akan dimasukkan dalam tab order sehingga dapat memiliki fokus. 
+    Teknik ini sangat berguna jika kita membuat custom button dan ingin memberikannya fokus.
+
+E) Affordances dan Semantics
+   E.1) Affordances 
+        : Setiap benda memiliki dan menyampaikan makna secara langsung 
+          kepada kita mengenai fungsi dan cara penggunaannya. Contohnya ialah gagang pintu
+
+F) Penggunaan heading
+   <h1> : digunakan sebagai topik utama atau sebuah logo dari halaman.
+        Satu halaman website hanya terdiri dari satu elemen <h1>
+
+   <h2> : gunakan elemen ini untuk memecah konten yang sifatnya mayor
+
+   <h3> : gunakan elemen ini bila konten di dalam h2 memiliki sub konten lagi
+     
+ 
