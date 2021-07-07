@@ -1,0 +1,185 @@
+E) Solid
+    E1) Single Responsibility Principle(SRP)
+    :  Seharusnya tidak akan lebih dari satu alasan sebuah class untuk berubah
+     
+     Bad Practice
+     class FoodService {
+         constructor(id, name, date){
+             this.id = id;
+             this.name = name;
+             this.date = date;
+         }
+
+          addToStore() {
+            if (!this.isExpired()) {
+                // Add to store
+            }
+        }
+
+         isExpired(){
+             const stringDateArray = this.date.split("/");
+             const foodDate = new Date(...stringDateArray);
+             return foodDate >= new Date();
+         }
+     }
+
+     Good Practice
+    class FoodExpiry {
+    static isExpired(date) {
+    const stringDateArray = date.split("/");
+    const foodDate = new Date(...stringDateArray);
+    return foodDate >= new Date();
+    }
+    }
+    
+    
+    class FoodService {
+    constructor(id, name, date) {
+    this.id = id;
+    this.name = name;
+    this.date = date;
+    }
+    
+    
+    addToStore() {
+    if (!FoodExpiry.isExpired(this.date)) {
+        // Add to store
+    }
+    }
+    }
+
+    E2) Open/Closed Principle(OCP)
+    : keadaan ketika sebuah sistem dapat ditambahkan dengan spesifikasi baru yang dibutuhkan.
+     Sedangkan tertutup untuk dimodifikasi adalah agar ketika ingin menambahkan 
+     spesifikasi baru, kita tidak perlu mengubah atau memodifikasi sistem yang telah ada.
+
+     Bad Practice 
+     : const ShippingType = {
+        JNE: 'jne',
+        TIKI: 'tiki',
+        };
+  
+       class ShippingOrderService {
+        checkout(product, type) {
+            switch (type) {
+                case ShippingType.JNE:
+                /** do checkout product with shipping type  */
+                break;
+                case ShippingType.TIKI:
+                /** do checkout product with shipping type  */
+                break;
+                default:
+                throw new TypeError('Unsupported shipping type');
+            }
+            }
+        }
+    Jika dibutuhkannya shipping type baru maka harus mengubah class 
+
+    const ShippingType = {
+        JNE: 'jne',
+        TIKI: 'tiki',
+        POSINDO: 'posindo', // menambahkan jasa baru.
+        };
+        
+        class ShippingOrderService {
+        checkout(product, type) {
+        switch (type) {
+            case ShippingType.JNE:
+            /** do checkout product with shipping type */
+            break;
+            case ShippingType.TIKI:
+            /** do checkout product with shipping type */
+            break;
+            case ShippingType.POSINDO: // akan menambahkan jasa baru juga pada Class. Ini hal yang buruk!
+            /** do checkout product with shipping type */
+            break;
+            default:
+            throw new TypeError('Unsupported shipping type');
+        }
+        }
+        }
+
+    Good Practice
+    class Shipping {
+        constructor() {
+            if (this.constructor === Shipping) {
+                throw new TypeError(`Abstract class "${this.constructor.name}" cannot be instantiated directly.`);
+            }
+        }
+ 
+        calculate(product) {
+            throw new Error('You have to implement the method calculate!');
+        }
+
+        class JNEShipping extends Shipping {
+            calculate(product) {
+            return /** calculate amount of this type with product */;
+            }
+            }
+            
+            
+            class TIKIShipping extends Shipping {
+            calculate(product) {
+            return /** calculate amount of this type with product */;
+            }
+            }
+            
+            
+            class ShippingOrderService {
+            checkout(product, shipping) {
+            const costShipping = shipping.calculate(product);
+            /** Code to do check */
+            }
+    }
+
+    Sehingga bila ada shipping baru cukup membuat class baru
+
+    class Shipping {
+        constructor() {
+        if (this.constructor === Shipping) {
+            throw new TypeError(`Abstract class "${this.constructor.name}" cannot be instantiated directly.`);
+        }
+        }
+        
+        
+        /**
+        * Implementation required
+        */
+        calculate(product) {
+        throw new Error('You have to implement the method calculate!');
+        }
+        }
+        
+        
+        class JNEShipping extends Shipping {
+        calculate(product) {
+        return /** calculate amount of this type with product */;
+        }
+        }
+        
+        
+        class TIKIShipping extends Shipping {
+        calculate(product) {
+        return /** calculate amount of this type with product */;
+        }
+        }
+        
+        
+        class POSINDOShipping extends Shipping {
+        calculate(product) {
+            return /** calculate amount of this type with product */;
+        }
+        }
+        class SiCepatShipping extends Shipping {
+        calculate(product) {
+            return /** calculate amount of this type with product */;
+        }
+        }
+        
+        
+        class ShippingOrderService {
+        checkout(product, shipping) {
+        const costShipping = shipping.calculate(product);
+        /** Code to do check */
+        }
+        }

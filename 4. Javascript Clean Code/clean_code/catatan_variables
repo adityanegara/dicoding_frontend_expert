@@ -1,0 +1,80 @@
+A) Variables
+    A1) Menamai variable harus niat
+   : Menamai variables harus memiliki makna 'semantic'
+     contoh kita ingin membuat variable untuk hari yang telah berlalu
+
+     Bad Practice = let d;
+     Good Practice = let elapsedTimeInDays;
+
+    A2) Menamai variable harus memiliki arti
+    Bad Practice 
+    : const makeCapitalSentance = (array1,array2) =>
+      array1.map((item,index) => `${item} is capital of ${index}`);
+
+    Good Practice
+    : const makeCapitalSentance = (capitals, countries) =>
+      capitals.map((capital, index) => `${capital} is capital of ${countries[index]}`});
+
+    A3) Mudah Diucap
+    Bad Practice
+    : const yyyymmdd = moment().format('YYYY/MM/DD');
+
+    Good Pracitce
+    : const currentDate = moment().format('YYYY/MM/DD');
+
+    A4) Mudah Dicari
+    Bad Practice
+    : setTimeout(blastOff, 86400000);
+
+    Good Pracitce
+    : const MILISECONDS_IN_A_DAY = 86_400_000;
+      setTimeout(blastOff, MILISECONDS_IN_A_DAY);
+
+    A5) Eksplisit (Avoid Mental Mapping)
+    Bad Practice
+    : const locations = ['Jakarta', 'Bandung', 'Surabaya']';
+        locaions.forEach((1) =>{
+            doSomeStuff();
+        })
+
+    Good Pracitce
+    : const locations = ['Jakarta', 'Bandung', 'Surabaya']';
+        locaions.forEach((location) =>{
+            doSomeStuff();
+        })
+    
+    A6) Hindari Penambahan kata yang tidak perlu
+    Bad Practice
+    : const Car = {
+        carMake: 'Honda',
+        carModel: 'Accord',
+        carColor: 'Blue',
+        };
+        
+        
+        const paintCar = (car) => {
+        car.carColor = 'Red';
+        };
+
+    Good Practice
+    : const Car = {
+        make: 'Honda',
+        model: 'Accord',
+        color: 'Blue',
+        };
+        
+        
+        const paintCar = (car) => {
+        car.color = 'Red';
+        };
+
+     A7) Gunakan Default Argument
+     Bad Practice 
+     : const createMicrobrewery = (name) => {
+        const breweryName = name || 'Hipster Brew Co.';
+         };
+
+    Good Pracitce 
+    : const createMicrobrewery = (name = 'Hipster Brew Co.') => {
+        };
+

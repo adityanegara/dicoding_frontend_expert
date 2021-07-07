@@ -1,0 +1,141 @@
+B) Function
+    B1) Argument Fungsi
+    : Argument pada fungsi maksimalkan hanya 1 atau 2 argument bila lebih dari itu 
+      gunakan objek
+
+      Bad Practice
+      : const createMenu = (title, body, buttonText, cancellable) => {
+
+        };
+
+      Good Practice
+      : const createMenu = ({ title, body, buttonText, cancellable }) => {
+        // ...
+        };
+        
+        
+        createMenu({
+        title: 'Foo',
+        body: 'Bar',
+        buttonText: 'Baz',
+        cancellable: true,
+        });
+
+    B2) Hanya Melakukan Satu Hal
+    Bad Practice
+    : function emailClients(clients) {
+        clients.forEach((client) => {
+        const clientRecord = database.lookup(client);
+        if (clientRecord.isActive()) {
+            email(client);
+        }
+        });
+    }
+
+    Good Practice
+    : function isActiveClient(client) {
+        const clientRecord = database.lookup(client);
+        return clientRecord.isActive();
+        }
+        
+        
+        function emailActiveClients(clients) {
+        clients.filter(isActiveClient).forEach(email);
+        }
+
+    B3) Nama Fungsi Harus Merepresentasikan tujuannya
+    Bad Practice
+    : const addToDate = (date, month) =>{
+
+    };
+    const date = new Date();
+    addToDate(data, 1);
+
+    Good Practice
+    : const addMonthToDate = (month, date) => {
+    
+    };
+    
+    const date = new Date();
+    addMonthToDate(1, date);
+
+    B.4) Fungsi Harus Memiliki satu tingkatan abstraksi
+    Bad Practice
+    : function sendNotification(payload) {
+        const pushNotificationManager = new PushNotificationManager();
+        const tokens = [];
+        pushNotificationManager.getClients().forEach((client) => {
+        tokens.push(client.token);
+        });
+        
+        const payloadFormatter = new PayloadFormatter();
+        const formattedPayload = payloadFormatter.format(payload);
+        
+        const notificationBuilder = new NotificationBuilder(formattedPayload, tokens).build();
+        notificationBuilder.sendNotification();
+        }
+    
+    Good Practice 
+    : function tokenize() {
+        const pushNotificationManager = new PushNotificationManager();
+        const tokens = [];
+        pushNotificationManager.getClients().forEach((client) => {
+        tokens.push(client.token);
+        });
+        return tokens;
+        }
+        
+        function formatPayload(payload) {
+        const payloadFormatter = new PayloadFormatter();
+        return payloadFormatter.format(payload);
+        }
+        
+        function sendNotification(payload) {
+        const tokens = tokenize();
+        const formattedPayload = formatPayload(payload);
+        const notificationBuilder = new NotificationBuilder(formattedPayload, tokens).build();
+        notificationBuilder.sendNotification();
+        }
+
+    B.5) Enakpsulasikan Kondisional
+    : Tak jarang ketika mengevaluasi sebuah kode menggunakan if, 
+       kita banyak menetapkan kondisi sehingga penulisan if terlalu panjang.
+
+       Bad Practice 
+       if(request.state === 'loading' && isEmpty(listNode)) {
+        // show spinner
+        }
+
+       Good Practice
+       const shouldShowLoading = (response, listNode) => {
+        return response.state === 'loading' && isEmpty(listNode);
+        };
+        
+        
+        if (shouldShowLoading(response, listNode)) {
+        // show loading.
+        } 
+
+    B.6) Hindari Negasi Kondisional
+        Bad Practice
+        : const shouldNotShowLoading = (response, listNode) => {
+            return response.state !== 'loading' && !isEmpty(listNode);
+            };
+            
+            
+            if (!shouldNotShowLoading(response, listNode)) {
+            // show loading.
+            }
+
+        Good Practice 
+        : const shouldShowLoading = (response, listNode) => {
+            return response.state === 'loading' && isEmpty(listNode);
+            };
+            
+            
+            if (shouldShowLoading(response, listNode)) {
+            // show loading.
+            }
+
+
+      

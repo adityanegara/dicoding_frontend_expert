@@ -1,9 +1,0 @@
-img {
-    display: block;
-}
-
-#test{
-    width: 350px;
-    height: 350px;
-    background-image: url('../public/images/heros/hero-image_1.jpg');
-}
