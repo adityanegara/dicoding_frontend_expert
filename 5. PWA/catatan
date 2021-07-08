@@ -92,5 +92,39 @@ D) Komponen Pembentuk PWA
     D.8) Notifications
         : notifikasi popun yang muncul pada perangkat.
 
+E) Web Architecture
+
+    : Ada dua arsitektur yang digunakan dalam membangun sebuah web bila ditinjau dari
+      bagaimana server mengembalikan konten halaman, yakni Server side rendering(SSR) dan
+      Client Side Rendering (CSR). 
+
+      SSR : Pola dimana setiap halaman di render pada sisi server dan dikembalikan ke browser
+            dalam bentuk HTML yang siap ditampilkan.
+
+      CSR : Pola dimana server hanya mengembalikan data(biasanya dalam bentuk format JSON atau XML) 
+            untuk olah dan di render pada sisi client (browser) oleh javascript
+
+     Ada dua pola arsitektur web yang ditinjau dari bagaimana sebuah konten dimuat yaitu
+     Single page app, dan multi-page app.
+
+      MPA : saat website terdiri dari beberapa halaman HTML. seperti
+            domain.com/home.HTML
+            domain.com/profile.HTML
+            domain.com/timeline.HTML
+     
+      SPA : website hanya menggunakan satu berkas HTML
+            domain.com/#/home -> Halaman Home
+            domain.com/#/profile -> Halaman Profil
+            domain.com/#/timeline -> Halaman Timeline
+            
+F) Application shell
+
+    : Salah satu teknik dalam PWA untuk membuat komponen UI termuat secara instan tanpa menunggu
+      response dari server. App shell sejatinya hanya terdiri dari HTML, CSS, dan javascript
+      yang disimpan dalam cache pada request pertama agar request selanjutnya tidak
+      perlu mengambil dari server lagi.
+
+      
+
         
     
