@@ -1,0 +1,96 @@
+A) Karakteristik Progresive Web Apps(PWA)
+
+    A.1) Progresif
+        : Bekerja untuk setiap pengguna. Tak peduli apapun browsernya, tidak masalah.
+        PWA dibangun dengan peningkatan progresif sebagai intinya.
+
+    A.2) Responsif
+        : Mampu menyesuaikan dengan berbagai perangkat. Baik itu desktop, seluler, tablet, 
+        atau yang lainnya.
+
+    A.3) Konektivitas Independen
+        : Service worker membantu mengikatkan proses load time ketika internet
+        memiliki kualitas rendah, bahkan dapat diakses dalam keadaan offline.
+
+    A.4) Seperti Aplikasi Native
+        : Experience yang diberikan tak kalah dengan aplikasi native karena PWA dibangun dengan 
+        struktur application shell.
+    
+    A.5) Aman
+        : PWA mewajibkan web untuk berjalan pada HTTPS. ini tentu membuat web aman dari berbagai 
+        ancaman
+
+    A.6) Dapat Ditemukan
+        : Terdefinisi sebagai "Aplikasi" berkat Web App Manifest dan service worker. 
+        Dan dapat mudah ditemukan oleh search engine seperti Google.
+
+    A.7) Re-engagable 
+        : Dengan fitur pemberitahuan seperti push notification, dapat mengajak kembali
+        pengguna untuk menggunakan aplikasi
+
+    A.8) Dapat dipasang
+        : Memungkinkan pengguna untuk memasang di layar beranda tanpa melalui application store
+
+    A.9) Dapat ditautkan
+        : Dapat dengan mudah dibagukan melalui URL.
+
+B) Kelebihan PWA
+
+    B.1) Tidak membutuhkan toko aplikasi
+        : Karena PWA merupakan web, untuk menggunakannya cukup menggunakan browser saja
+
+    B.2) Tidak perlu melakukan update
+        : Cukup melakukan refresh layaknya web pada browser
+
+    B.3) Mudah dipublikasi, diakses, dan dibagian
+        : Cukup kirimkan tautan atau URL aplikasi dan pengguna lainnya bisa mengakses dengan cepat.
+
+    B.4) Bisa memanfaatkan fitur native
+        : notifikasi, lokasi, orientasi, gesture
+    
+    B.5) Mengurangi Penggunaan dapat
+        : Load time PWA dapat lebih cepat dibandingkan dengan aplikasi native.
+
+C) Kekurangan PWA
+
+    C.1) Belum semua fitur native dapat dimanfaatkan PWA
+        : kontak, SMS, Telepon, bluetooth, dan notification
+
+    C.2) Tidak didukung browser lama
+
+D) Komponen Pembentuk PWA
+
+    D.1) Application shell
+        : Kerangka antarmuka aplikasi. Mereka disimpan lebih dahulu di dalam cache sehingga
+          dapat tampil secara instan saat aplikasi dibuka. Umumnya komponen halaman yang menjadi
+          bagian dari app shell adalam komponen yang selalu ada untuk semua halaman 
+          seperti header, sidebar, dan footer. Adapun komponen dari konten halamanakan dimuat
+          secara dinamis dan asinkron.
+    
+    D.2) Web App Manifest
+        : file JSON yang mengontrol bagaimana aplikasi ditampilkan dan dijalankan di sisi
+          pengguna. 
+
+    D.3) Service worker
+        : Script yang dijalankan oleh browser di latar belakang. dengan menggunakan
+        service worker, kita dapat memanfaatkan resource yang tersimpan di dalam cache
+        untuk menampilkan konten bahkan dalam mode jaringan offline.
+
+    D.4) Cache API 
+        : Tempat penyimpanan lokall yang digunakan browser untuk menyimpan resource agar
+        dapat digunakan kembali. 
+
+    D.5) Fetch API
+        : melakukan request pada server.
+
+    D.6) IndexedDB
+        : sistem penyimpanan lokal berbasis NoSQL di browser.
+
+    D.7) Web Socket
+        : untuk real time communication
+    
+    D.8) Notifications
+        : notifikasi popun yang muncul pada perangkat.
+
+        
+    
