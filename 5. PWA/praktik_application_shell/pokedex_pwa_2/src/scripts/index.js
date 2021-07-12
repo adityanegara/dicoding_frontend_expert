@@ -2,6 +2,8 @@ import 'regenerator-runtime';
 import '../styles/main.scss';
 import App from './views/app';
 
+
+
 const app = new App({
     navbar : document.querySelector('#navbar_element'),
     content : document.querySelector('#main_element'),

@@ -124,6 +124,56 @@ F) Application shell
       yang disimpan dalam cache pada request pertama agar request selanjutnya tidak
       perlu mengambil dari server lagi.
 
+G) Siklus Hidup Service Worker
+   
+    G.1) Installation
+    :Karena Service Worker terpisah dari DOM, untuk menambahkan event kita bisa
+    gunakan self, bukan window ataupun document. Umumnya pada proses ini
+    kita melakukan penyimpanan resource App Shell pada Caches API.
+
+    G.2) Activate
+    : Setelah instalasi service worker berhasil, siklus hidup selanjutnya ialah
+    proses aktivassi. Pada proses ini kita bisa manfaatkan untuk mengelola cache lama.
+    Contohnya kita bisa menghapus cache lama bila terdapat penambahan app shell
+    atau perubahan versi aplikasi. Hal ini penting, karena bila tidak dilakukan
+    cache lama akan menumpuk dan membebani storage browser.
+
+    Sebelum proses aktivasi selesai, Service worker belum dapat mengontrol browser,
+    dalam arti ia belum bisa menjalankan tugasnya. Namum perlu diingat untuk proses
+    aktivasi Service Worker baru, tak akan langsung dieksekusi bila terdapat service worker
+    lama sedang aktif mengontrol browser.  Service worker lama akan berhenti mengontrol
+    ketika tab atau browser web ditutup.
+
+    G.3) Idle
+    : Setelah service worker berhasil dipasang dan diaktifkan, maka status Service Worker
+    akan mengalami idle atau bisa kita sebut bersiap. bersiap untuk melakukan tugas utama
+    yaitu mengontrol event fetch, message, atau push yang terjadi pada browser. 
+
+H) Event Pada Service Worker
+
+    H.1) Event Fetch
+    : Event fetch akan terpanggil setiap kali sebuah permintaan(request) dilakukan oleh client. 
+     Kita dapat mengecek apakah request yang dilakukan sudah terdapat pada Cache API 
+     atau belum.
+
+    H.2) Event message
+    : Event ini terjadi saat client yang memanggil method postMessage() pada Service Worker
+    yang sedang aktif. Event ini dapat kita manfaatkan untuk menerima informasi
+    dari client ke Service Worker
+
+    H.3) Event Sync
+    : Kita dapat memantau event sync sesuai dengan background sync yang telah kita daftarkan
+    di bagian awal proses registrasi service worker. Background sync adalah
+    web API yang dapat kita gunakan untuk menunda sebuah aksi sampai perangkat 
+    terhubung dengan stabil ke jaringan internet. 
+
+    H.4) Event push
+    : Event push diinisiasi oleh backend server dan melewati push service yang ada di browser.
+    Service worker dapat memantau setiap event push yang datang ke browser.
+
+    cons
+
+
       
 
         
