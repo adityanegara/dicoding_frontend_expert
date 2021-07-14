@@ -171,8 +171,210 @@ H) Event Pada Service Worker
     : Event push diinisiasi oleh backend server dan melewati push service yang ada di browser.
     Service worker dapat memantau setiap event push yang datang ke browser.
 
-    cons
+I) Cache API
+    
+    : Tempat penyimpanan lokal yang digunakan browser untuk
+    menyimpan resource agar dapat digunakan kembali sehingga
+    pada pemanggilan selanjutnya tak perlu mengirim permintaan
+    (request) lagi ke jaringan.
 
+    H.1)Mengecek Apakah Browser mendukung cache API
+
+    : const cacheAvailable = 'cache' in self; 
+
+    H.2) Membuat dan Membuka Cache
+
+    : Untuk membuat dan membuka cache, menggunakan
+    caches.open(name). Jika cache dengan nama yang ditetapkan
+    belum ada ia akan otomatis terbuat. Method open() 
+    akan mengembalikan promise yang membawa objek cache pada
+    resolves
+
+    caches.open('my-cache')
+    .then((cache)=>{
+
+    });
+
+    H.3) Menambahkan Resource Ke Cache
+
+        H.3.1) Cache.add
+        
+        : cache.add() membutuhkan satu parameter
+        bisa sebuah request, atau URL. method ini 
+        membuat request dikirimkan ke server dan menyimpan
+        response ke cache. Jika request gagal, atau response 
+        menghasilkan kode 200, maka tidak ada data yang disimpan
+        pada cache
+
+        cache.add(new Request('/data.json'));
+        cache.add('data.json');
+
+        H.3.2) Cache.addAll
+        
+        : Sama seperti add, namun ia dapat memasukkan banyak request
+        atau URL String sekaligus. Jika salah satu request gagal, 
+        maka tak ada satupun resource yang disimpan. Dan promise
+        yang dikembalikan oleh method ini berstatus rejected
+
+        const urls = [/weather/today.json', '/weather/tomorrow.json'];
+        cache.addAll(urls);
+    
+    H.4) Mengambil Resource dari cache
+
+        : Untuk mencari dan mengambil resource dari cache, kita
+        gunakan method match
+
+        cache.match(request)
+        .then((response)=>{
+
+        });
+
+        Pada method ini, kita dapat menerapkan options di parameter
+        kedua. Options digunakan bila kita ingin pencarian cache 
+        terhadap request tidak memperdulikan beberapa query,
+        parameter, atau attribution lainnya.
+
+        const options = {
+            ignoreSearch : true,
+            ignoreMethod : true,
+            ignoreVary : true,
+        };
+
+        cache.match(request, options)
+        .then((response)=>{
+
+        });
+
+    H.5) Mencari Cache
+
+    : Untuk menampilkan seluruh nama atau keys yang tersedia
+    pada cache, kita dapat menggunakan method keys.
+
+    caches.keys()
+    .then((cacheNames)=>{
+        cacheNames.forEach((cacheName) =>{
+            if(cacheNames !== 'my-cache'){
+
+            }
+        })
+    })
+
+    H.6) Menghapus Cache
+
+    : Untuk menghapus cache, ita dapat menggunakan method
+    caches.delete(). Method tersebut membutuhkan satu parameter
+    yakni nama dari cache yang akan dihapus. Biasanya ketika menghapus
+    cache kita kombinasikan dengan penggunaan keys.
+
+    cache.keys()
+        .then((cacheNames) =>{
+            cacheNames.forEach((cacheName) =>{
+                if(cacheNames !== 'my-cache'){
+                    caches.delete(cacheName)
+                }
+            })
+        })
+
+    H.7) Caching Strategies
+
+        H.7.1) Pola Cache Only
+
+        : Pola cache only merupakan pola caching dimana aplikasi
+        hanya mengembalikan aset yang ada di dalam cache, 
+        tanpa mengirim request ke jaringan. Cache only 
+        cocok digunakan pada aset statis yang jarang berubah
+        seperti aset untuk app shell.
+
+        self.addEventListener('fetch', (event) => {
+            event.respondWith(caches.match(event.request));
+        });
+
+        1.) precaching, menyimpan aset ke dalam cache pada saat
+        instalasi service worker. 
+
+        2) halaman melakukan request dan diintercept service worker
+
+        3) service worker mencari cache yang sesuai
+
+        4) cache mengembalikan ke halaman.
+
+        H.7.2) Network Only
+
+        : hanya mengirimkan permintaan ke internet
+        tanpa menggunakan penyimpanan cache. Strategi 
+        ini cocok diterapkan pada data yang selalu berubah
+        dan pengguna harus selalu mendapatkan data terbaru.
+
+        self.addEventListener('fetch', (event)=>{
+            event.respondWith(fetch(even.request));
+        });
+
+        H.7.2) Cache First(Cache Fallback to network)
+
+        : Request akan diambil dari cache dulu, namun bila request
+        tidak ditemukan pada cache, ia akan mengambil resource dari 
+        internet.
+
+        self.addEventListener('fetch', (event)=>{
+            event.respondWith(
+                caches.match(event.request).then((response) =>{
+                    return response || fetch(even.request);
+                })
+            )
+        });
+
+        H.7.2) Network First
+
+        : Selalu mengirim request ke internet, bila request berhasil
+        response akan dimasukan ke dalam cache. Namun bila request
+        gagal ia langsung dialihkan menggunakan cache.
+
+        self.addEventListener('fetch', (event)=>{
+            event.respondWith(
+                fetch(even.request)
+                .catch(()=>{
+                    return caches.match(event.request)
+                })
+            )
+        })
+
+        H.7.3) Stale While Revalidate
+
+        : Pada strategi Stale while revalidate kita 
+        mengembalikan dulu data dari cache bila ada, 
+        sambil mengirim juga permintaan ke jaringan untuk memperbaharui 
+        data di dalam cache. Sehingga untuk permintaan selanjutnya,
+        data yang diambil dari cache adalah data yang terbaru
+
+        self.addEventListener('fetch', (event)=>{
+            event.respondWith(revalidateCache(event.request));
+        });
+
+        const revalidateCache = async(request) =>{
+            const response = await caches.match(request);
+            if(response){
+                _fetchRequest(request);
+                return response;
+            }
+            return _fetchRequest(request);
+        };
+
+        const _fetchRequest = async (request) => {
+            const response = await fetch(request);
+            
+            if (!response || response.status !== 200) {
+                return response;
+            }
+            _addToCache(request);
+            return response;
+        };
+
+        const _addToCache = async (request) => {
+            const cache = await caches.open(CACHE_NAME);
+            cache.add(request);
+        };
+
+        
 
       
 
