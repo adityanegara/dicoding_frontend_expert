@@ -374,6 +374,265 @@ I) Cache API
             cache.add(request);
         };
 
+I) IndexedDB
+    
+    : IndexedDB adalah database yang terdapat di web browser.
+    Karena tersedia secara lokal, untuk mengaksesnya kita tidak
+    membutuhkan koneksi internet.
+
+    Database ini berbasis NoSQL, artinya kita tidak perlu 
+    melakukan SQL query setiap kali melakukan transaksi data.
+    Data yang disimpan di dalam indexedDB berupa javascript object.
+
+    indexedDB tersedia pada browser secara unik berdasarkan domain. 
+    Maksudnya, sebuah domain memiliki databasenya sendiri, dan tidak bisa 
+    mengakses database yang berada pada situs lain.
+
+    I.1) Istilah dalam IndexedDB
+
+        I.1.1) Database
+        : Database merupakan tempat tertinggi dalam penyimpanan data.
+        Di dalam database kita dapat membuat banyak object store. 
+        Kita pun dapat membuat banyak database, namun umumnya satu aplikasi
+        cukup membuat satu database saja.
+
+        I.1.2) Object store
+        : Tempat penyimpanan satu jenis kumpulan data. Kalau
+        dalam SQL sama seperti table.
+
+        I.1.3) Index
+        : object store khusus yang dipakai untuk mengorganisir
+        object store lain berdasarkan salah satu propertinya.
+        
+        I.1.4) Operation
+        : Istilah yang dipakai saat kita berurusan dengan database
+
+        I.1.5) Transaction
+        : Pembungkus sebuah operation atau sekelompok operation
+        untuk menjaga integritas data. Jika ada operation yang gagald
+        ditengah jalan, isi database akan dikembalikan seperti saat 
+        sebelum transaction dilakukan. Semua operation di indexedDB 
+        harus dibungkus oleh transaction agar tidak terjadi tumpang tindih
+        dalam proses penulisan data di dalam database.
+
+        I.1.6) Cursor
+        : Objek yang bisa dimanfaatkan untuk melakukan iterasi
+        pada kumpulan data di dalam database(membaca data satu persatu).`
+
+    I.2) Dasar Pengunaan IndexedDB
+
+        : Sejatinya indexedDB low level API yang butuh banyak konfigurasi
+        dan penyesuaian sebelum menggunakannya. maka dari itu kita 
+        menggunakan Jake Archibald(Google Engineer) idb(indexedDB, but 
+        with promises)
+
+        npm install idb
+
+        menggunakannya
+        
+        import * as idb from 'idb';
+
+    I.3) Membuat/Membuka Database dan Object store
+
+        : import {openDB} from 'idb';
+          const DATABASE_NAME = 'my-pwa-database';
+          const dbPromise = openDB(DATABASE_NAME, 1, {
+              upgrade(database){
+                  //do something with database
+              }
+          })
+
+          fungsi openDB membutuhkan 3 parameter yang pertama
+          adalah nama database yang akan dibuka, versi databasenya,
+          dan sebuah object yang terdiri dari callback, upgrade, blocked
+          , dan blocking.
+
+          Di dalam callback upgrade kita dapat memanfaatkan nilai database
+          untuk membuat, menghapus object store ataupun index pada
+          database.
+
+          Untuk membuat object store baru, kita gunakan method
+          database.createObjectStore()
+
+          import {openDB} from 'idb';
+          const DATABASE_NAME = 'my-pwa-database';
+          const OBJECT_STORE_NAME = 'movie';
+
+          const dbPromise = openDB(DATABASE_NAME,1,{
+              upgrade(database){
+                  database.createObjectStore(OBJECT_STORE_NAME, {keypath: 'id'});
+              }
+          })
+
+          properti keypath mirip seperti primary key pada sql database.
+
+    I.4) Operasi CRUD pada IndexedDB
+
+        I.4.1) Get Data
+        : const movie = (await dbPromise).get(OBJECT_STORE_NAME, id);
+        
+        method get() akan mengembalikan promise dengan satu objek yang
+        berada pada database. Objek yang dipilih seusai nilai keypath(id)
+        yang dimasukan pada parameternya.
+
+        Bila kita ingin mendapatkan seluruh nilai maka
+        
+        const movies = (await dbPromise).getAll(OBJECT_STORE_NAME);
+
+        I.4.2) Input Data
+        :const movie = {
+        id: 1,
+        title: 'Spiderman',
+        description: 'Lorem ipsum dolor sit amet',
+        }; 
+        (await dbPromise).add(OBJECT_STORE_NAME, movie);
+
+        Jika pada object store kita menetapkan keyPath, maka objek yang
+        dimasukan wajib memiliki properti dari keyPath tersebut, dan
+        nilainya harus unik.
+
+        I.4.3) Update Data
+        : (await dbPromise).put(OBJECT_STORE_NAME, movie);
+
+        I.4.4) Delete Data
+        : (await dbPromise).delete(OBJECT_STORE_NAME, id);
+
+J) WebSocket
+
+    : Teknologi yang mengizinkan komunikasi client server
+    berjalan dua arah secara aktif. Server tidak perlu
+    menunggu permintaan dari client, serevr bisa langsung 
+    mengirimkan data kapan saja. Begitu juga client. ia
+    dapat mengirimkan data ke server tanpa server harus menanggapi
+    balik apa data yang ia kirimkan. 
+
+    Dengan pola komunikasi aktif secara dua arah(full-duplex)
+    seperti ini client dan server perlu selalu terhubung agar
+    menerima sinyal komunikasi dari tiap pihak.
+    Karena selalu terhubung, kita dapat menciptakan komunikasi
+    yang real time. 
+
+    WebSocket cocok digunakan pada kasus real time chatting, live feed,
+    multiplayer gaming, live progress.
+
+    Untuk sisi server, agar websocket dapat berjalan pada HTTP, 
+    diperlukan proses Handshake. 
+
+    J.1) Membuka Koneksi WebSocket
+    
+    : Untuk memanfaatkan WebSocket pada browser, gunakan WebSocket API
+
+    const webSocket = new WebSocket(url, protocols)
+
+        J.1.1) Parameter URL
+        : Properti url merupakan alamat URL WebSocket server 
+        yang akan dikoneksikan. Nilai url harus menggunakan skema wss://
+        atau ws:// bila client memperbolehkan komunikasi dilakukan
+        pada jaringan yang tidak aman(insecure).
+
+            J.1.1.1) Secure Connection
+            : const webSocket =
+             new WebSocket('wss://www.example.com/socketserver')
+
+            J.1.1.2) Insecure Connection
+            : const webSocket =
+            new WebSocket('ws://www.example.com/socketserver');
+
+        J.1.2) Parameter protocols
+        : Parameter ini opsional. WebSocket dapat menyesuaikan interaksinya
+        berdasarkan protokol yang diinginkan. Untuk menetapkan protokol yang
+        diinginkan, kita manfaatkan parameter ini. Parameter ini kita dapat
+        memberikan nilai string yang terdiri dari satu atau lebih nama protokol
+
+            J.1.2.1) Single Protokol 
+            :new 
+              WebSocket('wss://www.example.com/socketserver', 'protocolOne');
+
+            J.1.2.2) Multi Protokol
+            :new 
+            WebSocket('wss://www.example.com/socketserver', 
+            ['protocolOne', 'protocolTwo']);
+        
+    J.2) Mengirim Data ke WebSocket Server
+
+        J.2.1) Method Send 
+        : const webSocket = 
+        new WebSocket('wss://www.example.com/socketserver');
+
+        webSocket.send('Some Text');
+
+        J.2.2) Method onopen
+        : Karena menghubungkan koneksi selalu berjalan asynchronous,
+        untuk menghindari kegagalan dalam mengirimkan daa ke WebSocket
+        server, lakukan pengiriman data setelah client berhasil 
+        terhubung dengan WebSocket server. 
+
+         const webSocket = 
+        new WebSocket('wss://www.example.com/socketserver');
+
+        webSocket.open = (event) =>{
+            websSocket.send('Some text');
+        }
+
+        J.2.3) Mengirim JSON
+        :  const webSocket = 
+        new WebSocket('wss://www.example.com/socketserver');
+
+        webSocket.open = (event) =>{
+             const data = {
+                type: 'message',
+                text: document.querySelector('#text'),
+                date: Date.now(),
+            };
+            websSocket.send(JSON.stringify(data));
+        }
+
+    J.3) Mendapatkan Data dari WebSocket Server
+        
+        J.3.1) method onmessage
+        : const webSocket = 
+        new WebSocket('wss://www.example.com/socketserver');
+
+        webSocket.onmessage = (event) =>{
+            console.log(event.data);
+        }
+
+        J.3.2) Bila server mengirimkan JSON
+        : const webSocket = 
+        new WebSocket('wss://www.example.com/socketserver');
+
+        webSocket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log(data);
+        };
+
+    J.4) Menutup Koneksi WebSocket
+    : webSocket.close();
+
+        J.4.1) method bufferedAmount
+        :Sebelum menutup koneksi alangkah baik selalu
+        melakukan pengecekan untuk memastikan tidak ada data berjalan 
+        yang sedang dikirim oleh server.
+
+        const closeWebSocket = (webSocket) =>{
+            if(!websocket.bufferedAmount){
+                webSocket.close();
+                return;
+            }
+            throw new Error('Pending Data is still available')
+        }
+
+        J.4.2) event close 
+        : Kita juga bisa memanfaatkan event close bila 
+        ingin menambahkan logika ketika koneksi WebSocket telah ditutup
+
+        webSocket.onclose = (event) => {
+            console.log('WebSocket connection was close');
+        };
+    
+
+
+
         
 
       
