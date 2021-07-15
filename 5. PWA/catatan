@@ -629,7 +629,60 @@ J) WebSocket
         webSocket.onclose = (event) => {
             console.log('WebSocket connection was close');
         };
+
+K) Notifikasi 
+
+    : Notifikasi membantu untuk menarik ulang pengguna untuk mengunjungi kembali website kita. 
+    Dengan adanya service worker dan Notification API, fitur notifikasi tak hanya dapat 
+    dimanfaatkan oleh aplikasi native saja, namun juga untuk web. Pada materi kali ini
+    kita akan belajar cara penggunaan Notification API mulai dari meminta izin, hingga menampilkan
+    notifikasi dengan fungsi yang berbeda.
     
+    K.1) Meminta Izin Menampilkan Notifikasi
+        : Untuk meminta izin jalannya notifikasi pada web, gunakan method requestPermission()
+        dari global object Notification.
+
+        const requestPermission = async () =>{
+               const result = await Notification.requestPermission();
+               if(result === 'denied'){
+                    console.log('Fitur Notification Tidak diijinkan');
+                    return;
+                }
+                if(result === 'default'){
+                    console.log('Pengguna Menutup kotak dialog permintaan ijin');
+                    return;
+                }        
+                    console.log('Fitur notification diijinkan');
+        }
+
+        Karena notifikasi merupakan teknologi baru yang hadir pada versi Google Chrome 42
+        ke atas, alangkah baiknya sebelum meminta izin, kita perlu mengecek apakah browser
+        mendukung notifikasi atau Belum
+
+        if('Notification' in window){
+            requestPermission();
+        }
+
+    K.2) Menampilkan Notifikasi
+
+        : Menampilkan notifikasi dapat dilakukan bila web kita sudah menerapkan Service Worker. 
+        Karena untuk menampilkan notifikasi dilakukan melalui nilai registration dan Service
+        Worker yang aktif, dan menggunakan method showNotification()
+
+        navigator.serviceWorker.ready.then((registration) =>{
+            registration.showNotification(title, options);
+        });
+
+        title : Judul dari notifikasi
+        options : objek yang digunakan mengatur bagaimana tampilan dan perilaku notifikasinya
+
+        navigator.serviceWorker.ready.then((registration) =>{
+            const title = 'Judul Notifikasi';
+            const options = { body: 'Ini merupakan konten dari notifikasi' };
+            registration.showNotification(title, options);
+        });
+
+     
 
 
 
