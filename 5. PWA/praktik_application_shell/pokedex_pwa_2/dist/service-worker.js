@@ -108,7 +108,7 @@ define("./service-worker.js",['./workbox-2a8a8a96'], function (workbox) { 'use s
     "revision": "78a09a722a92ebb95cc4639a8bdd521b"
   }, {
     "url": "main.bundle.js",
-    "revision": "c88c12164b02c41e49e0675ba9935b4b"
+    "revision": "477dedfcb002c9c128599a89499e2455"
   }, {
     "url": "vendor.bundle.js",
     "revision": "e0a7036fd1e026142bd69e649a428553"

@@ -1,7 +1,8 @@
 import 'regenerator-runtime';
 import '../styles/main.scss';
 import App from './views/app';
-
+import WebSocketInitiator from './utils/websocket-initiator';
+import CONFIG from './globals/config';
 
 
 const app = new App({
@@ -16,14 +17,13 @@ window.addEventListener('hashchange', ()=>{
 
 window.addEventListener('load', () => {
     app.renderPage();
+    WebSocketInitiator.init(CONFIG.WEB_SOCKET_SERVER);
 });
 
 if('serviceWorker' in navigator){
+
     window.addEventListener('load', () =>{
-        navigator.serviceWorker.register('/service-worker.js').then(registration =>{
-            console.log('SW registered', registration);
-        }).catch(registrationError =>{
-            console.log('SW Registration failed', registrationError);
-        });
+        
+        navigator.serviceWorker.register('./service-worker.js')
     });
 }
